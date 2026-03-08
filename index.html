@@ -15,14 +15,12 @@ body {
     overflow:hidden;
     text-align:center;
     cursor:crosshair;
-    touch-action: manipulation; /* Убирает задержку клика на мобилках */
+    touch-action: none; /* Предотвращаем стандартные свайпы браузера */
 }
 
-/* Искорки */
 .sparkle {position:absolute;width:4px;height:4px;border-radius:50%;background:white;pointer-events:none;box-shadow:0 0 10px white,0 0 20px var(--primary);animation:fly 1s ease-out forwards;}
 @keyframes fly {0%{transform:translate(0,0) scale(1);opacity:1;}100%{transform:translate(var(--dx),var(--dy)) scale(0);opacity:0;}}
 
-/* Кнопки оптимизированы под тач */
 button {
     padding:15px 35px;
     font-size:16px;
@@ -59,9 +57,8 @@ button:active {transform:scale(0.95);}
 }
 .screen.active {opacity:1;z-index:2;pointer-events:auto;}
 
-/* Фото для телефона */
 .photo {
-    width:80vw; /* Шире для мобилок */
+    width:80vw;
     height:auto;
     aspect-ratio: 2/3;
     max-height: 55vh;
@@ -98,7 +95,6 @@ button:active {transform:scale(0.95);}
 }
 @keyframes shine {to {background-position:200% center;}}
 
-/* Фото в финальном круге (меньше для мобильных) */
 .circle-photo {
     position:absolute;
     width:80px; 
@@ -113,7 +109,6 @@ button:active {transform:scale(0.95);}
 
 #matrix-canvas,#hearts-canvas,#confetti-final {position:fixed;top:0;left:0;width:100%;height:100%;pointer-events:none;}
 
-/* Адаптация заголовков */
 h1 { font-size: 40px !important; margin: 10px 0; }
 h2 { font-size: 28px !important; }
 
@@ -122,7 +117,7 @@ h2 { font-size: 28px !important; }
     top:50%;
     left:50%;
     transform:translate(-50%,-50%);
-    font-size:120px; /* Уменьшено для экрана телефона */
+    font-size:120px;
     color:#0F0;
     font-family:'Playfair Display';
     z-index:100;
@@ -140,7 +135,7 @@ h2 { font-size: 28px !important; }
 <div id="countdown-number" style="display:none;"></div>
 
 <div id="screen1" class="screen active">
-  <h1 class="rainbow-text">С днем рождением красотка</h1>
+  <h1 class="rainbow-text">С днем рождения, Красотка</h1>
   <button onclick="preStart()">Начать путешествие</button>
 </div>
 
@@ -174,7 +169,11 @@ const photos=[
 ];
 let photoIndex=0;
 
-// Поддержка тача для искорок
+// Функция вибрации (Android)
+function vibrate(ms) {
+    if (navigator.vibrate) navigator.vibrate(ms);
+}
+
 function createSparkleTouch(e) {
     const touch = e.touches[0];
     createSparkle({pageX: touch.pageX, pageY: touch.pageY});
@@ -209,6 +208,7 @@ function preStart(){
   cNumber.innerText=count;
   const timer=setInterval(()=>{
     count--;
+    vibrate(50); // Вибрация на каждый тик отсчета
     if(count>0)cNumber.innerText=count;
     else{
       clearInterval(timer);
@@ -240,9 +240,7 @@ function saveWish(){
   document.getElementById('screen3').classList.remove('active');
   document.getElementById('screen4').classList.add('active');
   const container=document.getElementById('finalCircle');
-  
-  // Адаптивный радиус для мобилок
-  const radius = Math.min(window.innerWidth, window.innerHeight) * 0.3;
+  const radius = Math.min(window.innerWidth, window.innerHeight) * 0.35;
   
   photos.forEach((p,i)=>{
     const img=document.createElement('img');
@@ -256,6 +254,7 @@ function saveWish(){
       img.style.top=`calc(50% + ${y}px - 55px)`;
       img.style.opacity='1';
       img.style.transform=`rotate(${angle * 10}deg) scale(1)`;
+      vibrate(30); // Легкий отклик при появлении фото
     },i*250);
     container.appendChild(img);
   });
@@ -267,13 +266,25 @@ function showFinalEffects(){
   text.style.textShadow='0 0 20px #ff4081, 0 0 40px #ff79b0';
   
   const heart=document.getElementById('bigHeart');
-  heart.style.transition='all 1s ease-out';
+  heart.style.transition='all 0.8s cubic-bezier(0.175, 0.885, 0.32, 1.275)';
   heart.style.opacity='1';
-  heart.style.transform='translate(-50%,-50%) scale(1)';
+  heart.style.transform='translate(-50%,-50%) scale(1.2)';
   
+  // Взрывной отклик
+  vibrate([100, 50, 100]);
+
   const firework=document.getElementById('fireworkSound');
-  firework.volume=0.3;
+  firework.volume=0.4;
   firework.play().catch(()=>{});
+
+  // Эффект сердцебиения телефона
+  setInterval(() => {
+    heart.style.transform = 'translate(-50%,-50%) scale(1.3)';
+    vibrate(20); 
+    setTimeout(() => {
+        heart.style.transform = 'translate(-50%,-50%) scale(1.1)';
+    }, 150);
+  }, 1000);
 
   const c=document.getElementById('confetti-final');
   const ctx=c.getContext('2d');
@@ -291,14 +302,13 @@ function showFinalEffects(){
       ctx.arc(p.x,p.y,p.r,0,Math.PI*2);
       ctx.fill();
       p.x+=p.dx; p.y+=p.dy;
-      if(p.y>c.height)p.y=0;
+      if(p.y>c.height)p.y=-10;
     }
     requestAnimationFrame(drawConfetti);
   }
   drawConfetti();
 }
 
-// Фон с сердцами
 const hCanvas=document.getElementById('hearts-canvas');
 const hCtx=hCanvas.getContext('2d');
 hCanvas.width=window.innerWidth;
