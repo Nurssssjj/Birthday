@@ -6,39 +6,33 @@
 <title>Happy Birthday! 🎉</title>
 <link href="https://fonts.googleapis.com/css2?family=Pacifico&family=Roboto:wght@300;700&family=Playfair+Display:wght@700&display=swap" rel="stylesheet">
 <style>
-:root {--primary:#ff4081;--accent:#9c27b0;}
-body{margin:0;font-family:'Roboto',sans-serif;background:#000;color:white;overflow:hidden;text-align:center;cursor:crosshair;}
-.sparkle{position:absolute;width:4px;height:4px;border-radius:50%;background:white;pointer-events:none;box-shadow:0 0 10px white,0 0 20px var(--primary);animation:fly 1s ease-out forwards;}
-@keyframes fly{0%{transform:translate(0,0) scale(1);opacity:1;}100%{transform:translate(var(--dx),var(--dy)) scale(0);opacity:0;}}
-button{padding:18px 50px;font-size:18px;font-weight:bold;color:white;background:linear-gradient(45deg,var(--primary),var(--accent));border:none;border-radius:50px;cursor:pointer;box-shadow:0 0 20px rgba(255,64,129,0.4);transition:all 0.4s cubic-bezier(0.175,0.885,0.32,1.275);text-transform:uppercase;letter-spacing:2px;position:relative;overflow:hidden;}
-button:hover{transform:scale(1.1);box-shadow:0 0 40px var(--primary);}
-.screen{display:flex;flex-direction:column;justify-content:center;align-items:center;width:100vw;height:100vh;position:absolute;top:0;left:0;opacity:0;transition:all 1.2s ease;pointer-events:none;}
-.screen.active{opacity:1;z-index:2;pointer-events:auto;}
-.photo{width:30vw;height:45vw;max-height:60vh;border-radius:20px;border:2px solid rgba(255,255,255,0.2);object-fit:cover;box-shadow:0 0 50px rgba(255,64,129,0.3);transition:transform 0.2s ease-out;}
-#wishInput{padding:15px;border-radius:20px;border:1px solid rgba(255,255,255,0.3);width:350px;background:rgba(255,255,255,0.1);backdrop-filter:blur(10px);color:white;text-align:center;font-size:20px;margin:20px 0;outline:none;}
-.rainbow-text{font-family:'Pacifico';background:linear-gradient(to right,#ff4081,#ffeb3b,#00e676,#2979ff,#ff4081);background-size:200% auto;color:transparent;-webkit-background-clip:text;background-clip:text;animation:shine 3s linear infinite;}
-@keyframes shine{to{background-position:200% center;}}
-.circle-photo{position:absolute;width:140px;height:190px;object-fit:cover;border-radius:15px;border:3px solid white;box-shadow:0 10px 30px rgba(0,0,0,0.5);opacity:0;transition:all 1s cubic-bezier(0.68,-0.55,0.265,1.55);}
-#matrix-canvas,#hearts-canvas,#confetti-final{position:fixed;top:0;left:0;width:100%;height:100%;pointer-events:none;}
-@media(max-width:768px){
-  .photo{width:60vw;height:90vw;}
-  #photoText{font-size:25px !important;}
-  #wishInput{width:80%;font-size:18px;}
-  #finalText{font-size:40px !important;}
-  button{padding:15px 30px;font-size:16px;}
-}
+:root {--primary:#ff4081; --accent:#9c27b0;}
+body {margin:0;font-family:'Roboto',sans-serif;background:#000;color:white;overflow:hidden;text-align:center;cursor:crosshair;}
+.sparkle {position:absolute;width:4px;height:4px;border-radius:50%;background:white;pointer-events:none;box-shadow:0 0 10px white,0 0 20px var(--primary);animation:fly 1s ease-out forwards;}
+@keyframes fly {0%{transform:translate(0,0) scale(1);opacity:1;}100%{transform:translate(var(--dx),var(--dy)) scale(0);opacity:0;}}
+button {padding:18px 50px;font-size:18px;font-weight:bold;color:white;background:linear-gradient(45deg,var(--primary),var(--accent));border:none;border-radius:50px;cursor:pointer;box-shadow:0 0 20px rgba(255,64,129,0.4);transition:all 0.4s cubic-bezier(0.175,0.885,0.32,1.275);text-transform:uppercase;letter-spacing:2px;position:relative;overflow:hidden;}
+button:hover {transform:scale(1.1);box-shadow:0 0 40px var(--primary);}
+.screen {display:flex;flex-direction:column;justify-content:center;align-items:center;width:100vw;height:100vh;position:absolute;top:0;left:0;opacity:0;transition:all 1.2s ease;pointer-events:none;}
+.screen.active {opacity:1;z-index:2;pointer-events:auto;}
+.photo {width:30vw;height:45vw;max-height:60vh;border-radius:20px;border:2px solid rgba(255,255,255,0.2);object-fit:cover;box-shadow:0 0 50px rgba(255,64,129,0.3);transition:transform 0.2s ease-out;}
+#wishInput {padding:15px;border-radius:20px;border:1px solid rgba(255,255,255,0.3);width:350px;background:rgba(255,255,255,0.1);backdrop-filter:blur(10px);color:white;text-align:center;font-size:20px;margin:20px 0;outline:none;}
+.rainbow-text {font-family:'Pacifico';background:linear-gradient(to right,#ff4081,#ffeb3b,#00e676,#2979ff,#ff4081);background-size:200% auto;color:transparent;-webkit-background-clip:text;background-clip:text;animation:shine 3s linear infinite;}
+@keyframes shine {to {background-position:200% center;}}
+.circle-photo {position:absolute;width:140px;height:190px;object-fit:cover;border-radius:15px;border:3px solid white;box-shadow:0 10px 30px rgba(0,0,0,0.5);opacity:0;transition:all 1s cubic-bezier(0.68,-0.55,0.265,1.55);}
+#matrix-canvas,#hearts-canvas,#confetti-final {position:fixed;top:0;left:0;width:100%;height:100%;pointer-events:none;}
 </style>
 </head>
 <body onmousemove="createSparkle(event)">
 
 <audio id="bgMusic" src="music.mp3" loop></audio>
-
+<audio id="fireworkSound" src="firework.mp3"></audio>
 <canvas id="hearts-canvas"></canvas>
 <canvas id="matrix-canvas"></canvas>
 <canvas id="confetti-final"></canvas>
 
 <div id="countdown-number" style="display:none;position:fixed;top:50%;left:50%;transform:translate(-50%,-50%);font-size:200px;color:#0F0;font-family:'Playfair Display';z-index:100;"></div>
 
+<!-- Screens -->
 <div id="screen1" class="screen active">
   <h1 class="rainbow-text" style="font-size:70px;">Для тебя...</h1>
   <button onclick="preStart()">Начать путешествие</button>
@@ -51,7 +45,8 @@ button:hover{transform:scale(1.1);box-shadow:0 0 40px var(--primary);}
 
 <div id="screen3" class="screen">
   <h2 class="rainbow-text" style="font-size:40px;">Загадай желание...</h2>
-  <input type="text" id="wishInput" placeholder="Мечтай смелее!"><br>
+  <input type="text" id="wishInput" placeholder="Мечтай смелее!">
+  <br>
   <button onclick="saveWish()">Отправить в космос</button>
 </div>
 
@@ -63,7 +58,206 @@ button:hover{transform:scale(1.1);box-shadow:0 0 40px var(--primary);}
 </div>
 
 <script>
-// весь твой JS здесь, только убираем fireworkSound
+// Фото
+const photos=[
+  {src:'photo1.jpg',text:'Ты — само совершенство 🌸'},
+  {src:'photo2.jpg',text:'Твоя улыбка лечит ✨'},
+  {src:'photo3.jpg',text:'Сияй, как самая яркая звезда 💛'},
+  {src:'photo4.jpg',text:'Мир прекраснее с тобой 💐'},
+  {src:'photo5.jpg',text:'Будь всегда такой нежной 🌷'},
+  {src:'photo6.jpg',text:'Твори, люби, будь счастлива! 🌟'}
+];
+let photoIndex=0;
+
+// Искорки за мышкой
+function createSparkle(e){
+  for(let i=0;i<3;i++){
+    const s=document.createElement('div');
+    s.className='sparkle';
+    s.style.left=e.pageX+'px';
+    s.style.top=e.pageY+'px';
+    const dx=(Math.random()-0.5)*100;
+    const dy=(Math.random()-0.5)*100;
+    s.style.setProperty('--dx',dx+'px');
+    s.style.setProperty('--dy',dy+'px');
+    document.body.appendChild(s);
+    setTimeout(()=>s.remove(),1000);
+  }
+}
+
+// Параллакс фото
+document.addEventListener('mousemove',(e)=>{
+  const photo=document.getElementById('photo');
+  if(photo){
+    const x=(window.innerWidth/2-e.pageX)/30;
+    const y=(window.innerHeight/2-e.pageY)/30;
+    photo.style.transform=`rotateY(${x}deg) rotateX(${-y}deg)`;
+  }
+});
+
+// Старт с матрицей и музыкой
+function preStart(){
+  document.getElementById('screen1').classList.remove('active');
+  const mCanvas=document.getElementById('matrix-canvas');
+  const cNumber=document.getElementById('countdown-number');
+  mCanvas.style.display='block';
+  cNumber.style.display='block';
+  
+  document.getElementById('bgMusic').play().catch(()=>{});
+  startMatrix();
+
+  let count=3;
+  cNumber.innerText=count;
+  const timer=setInterval(()=>{
+    count--;
+    if(count>0)cNumber.innerText=count;
+    else{
+      clearInterval(timer);
+      mCanvas.style.display='none';
+      cNumber.style.display='none';
+      document.getElementById('screen2').classList.add('active');
+      showPhotos();
+    }
+  },1000);
+}
+
+// Показ фото
+function showPhotos(){
+  if(photoIndex>=photos.length){
+    document.getElementById('screen2').classList.remove('active');
+    document.getElementById('screen3').classList.add('active');
+    return;
+  }
+  const img=document.getElementById('photo');
+  const txt=document.getElementById('photoText');
+  img.src=photos[photoIndex].src;
+  txt.innerText=photos[photoIndex].text;
+  setTimeout(()=>{
+    photoIndex++;
+    showPhotos();
+  },4000);
+}
+
+// Сохранение желания и финальный экран
+function saveWish(){
+  document.getElementById('screen3').classList.remove('active');
+  document.getElementById('screen4').classList.add('active');
+  const container=document.getElementById('finalCircle');
+  const radius=window.innerWidth<600?150:250;
+  photos.forEach((p,i)=>{
+    const img=document.createElement('img');
+    img.src=p.src;
+    img.className='circle-photo';
+    const angle=(i/photos.length)*Math.PI*2;
+    const x=Math.cos(angle)*radius;
+    const y=Math.sin(angle)*radius;
+    setTimeout(()=>{
+      img.style.left=`calc(50% + ${x}px - 70px)`;
+      img.style.top=`calc(50% + ${y}px - 95px)`;
+      img.style.opacity='1';
+      img.style.transform=`rotate(${angle*10}deg) scale(1)`;
+    },i*300);
+    container.appendChild(img);
+  });
+  setTimeout(showFinalEffects, photos.length*300+500);
+}
+
+// Финальные эффекты
+function showFinalEffects(){
+  // Glow текст
+  const text=document.getElementById('finalText');
+  text.style.textShadow='0 0 50px #ff4081,0 0 100px #ff79b0';
+  
+  // Параллакс фото
+  const photosEls=document.querySelectorAll('#finalCircle img');
+  photosEls.forEach(p=>{
+    const angle=Math.random()*360;
+    const scale=1+Math.random()*0.1;
+    p.style.transform=`rotate(${angle}deg) scale(${scale})`;
+    p.style.boxShadow='0 0 40px rgba(255,64,129,0.6)';
+  });
+
+  // Большое сердце
+  const heart=document.getElementById('bigHeart');
+  heart.style.transition='all 1s ease-out';
+  heart.style.opacity='1';
+  heart.style.transform='translate(-50%,-50%) scale(1)';
+  setInterval(()=>{
+    const scale=0.9+Math.random()*0.2;
+    heart.style.transform=`translate(-50%,-50%) scale(${scale})`;
+  },500);
+
+  // Звук фейерверка
+  const firework=document.getElementById('fireworkSound');
+  firework.volume=0.3;
+  firework.play().catch(()=>{});
+
+  // Падающее конфетти
+  const c=document.getElementById('confetti-final');
+  const ctx=c.getContext('2d');
+  c.width=window.innerWidth;
+  c.height=window.innerHeight;
+  const pieces=[];
+  for(let i=0;i<200;i++){
+    pieces.push({x:Math.random()*c.width,y:Math.random()*c.height,r:Math.random()*6+2,dx:(Math.random()-0.5)*4,dy:Math.random()*4+2,color:`hsl(${Math.random()*360},100%,50%)`});
+  }
+  function drawConfetti(){
+    ctx.clearRect(0,0,c.width,c.height);
+    for(let p of pieces){
+      ctx.fillStyle=p.color;
+      ctx.beginPath();
+      ctx.arc(p.x,p.y,p.r,0,Math.PI*2);
+      ctx.fill();
+      p.x+=p.dx; p.y+=p.dy;
+      if(p.y>c.height)p.y=0;
+      if(p.x>c.width)p.x=0;
+      if(p.x<0)p.x=c.width;
+    }
+    requestAnimationFrame(drawConfetti);
+  }
+  drawConfetti();
+}
+
+// Падающие сердца фон
+const hCanvas=document.getElementById('hearts-canvas');
+const hCtx=hCanvas.getContext('2d');
+hCanvas.width=window.innerWidth;
+hCanvas.height=window.innerHeight;
+let hearts=Array(60).fill().map(()=>({x:Math.random()*hCanvas.width,y:Math.random()*hCanvas.height,s:Math.random()*10+5,sp:Math.random()+0.5}));
+function drawHearts(){
+  hCtx.clearRect(0,0,hCanvas.width,hCanvas.height);
+  hCtx.fillStyle='rgba(255,64,129,0.4)';
+  hearts.forEach(h=>{
+    hCtx.beginPath();
+    hCtx.arc(h.x,h.y,h.s,0,Math.PI*2);
+    hCtx.fill();
+    h.y+=h.sp;
+    if(h.y>hCanvas.height) h.y=-10;
+  });
+  requestAnimationFrame(drawHearts);
+}
+drawHearts();
+
+// Матрица
+function startMatrix(){
+  const c=document.getElementById('matrix-canvas');
+  const ctx=c.getContext('2d');
+  c.width=window.innerWidth;
+  c.height=window.innerHeight;
+  const columns=Math.floor(c.width/20);
+  const drops=Array(columns).fill(1);
+  setInterval(()=>{
+    ctx.fillStyle="rgba(0,0,0,0.1)";
+    ctx.fillRect(0,0,c.width,c.height);
+    ctx.fillStyle="#0F0";
+    ctx.font="20px monospace";
+    drops.forEach((y,i)=>{
+      ctx.fillText(Math.floor(Math.random()*2),i*20,y*20);
+      if(y*20>c.height && Math.random()>0.975)drops[i]=0;
+      drops[i]++;
+    });
+  },40);
+}
 </script>
 </body>
 </html>
